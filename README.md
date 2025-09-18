@@ -1,6 +1,3 @@
-Aquí tienes el `README.md` listo para pegar en la raíz del repositorio y subir a GitHub. Copia todo el contenido a un archivo llamado `README.md`.
-
-```markdown
 # VelociTexto
 
 **VelociTexto** — aplicación educativa en JavaFX para practicar escritura rápida.  
@@ -177,20 +174,7 @@ El `Main` y controladores cargan recursos con `getResource(...)` o `getResourceA
 
 ---
 
-## Licencia (sugerida)
-
-Si no tienes preferencia, usa **MIT License**. Crea un fichero `LICENSE` con el texto MIT para permitir que otros usen/contribuyan fácilmente.
-
----
-
 ## Contacto / notas finales
 
 Este README refleja la versión actual del mini-proyecto VelociTexto, incluyendo correcciones y soluciones a problemas comunes que surgieron durante el desarrollo (rutas de recursos, módulos, FXML quirks y uso de `Preferences`). Si ves algo que no coincide con tu copia local (nombres de `fx:id`, rutas o versiones de JavaFX), adáptalo en el código y en `module-info.java`.
-
-¡Listo para subir a GitHub! Si quieres, añado badges (build status, license) o genero `LICENSE` y `pom.xml` listos para `mvn javafx:run`.
-
-```
-
-Si quieres que añada badges (por ejemplo build status o license) o que cree un `LICENSE` (MIT) y un `pom.xml` compatible, te los genero ahora mismo. ¿Quieres MIT y `pom.xml`?
-```
 
