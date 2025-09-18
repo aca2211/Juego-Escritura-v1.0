@@ -30,17 +30,8 @@ import java.net.URL;
  *   <li>Proveer métodos para reiniciar, finalizar partida y volver al menú</li>
  * </ul>
  *
- * <p>Comportamiento temporal:
- * <ul>
- *   <li>Tiempo base por nivel: 20s con decrementos cada 5 niveles, mínimo 2s</li>
- *   <li>Cada acierto suma 10 puntos y avanza un nivel</li>
- *   <li>Al fallar se muestra un diálogo y se retorna al menú</li>
- * </ul>
- *
- * <p>Notas técnicas:
- * <ul>
- *   <li>El controlador espera ciertos fx:id en el FXML: lblWord, txtInput, lblTimer, lblLevel, lblFeedback, btnValidate, btnRestart, progressBar, lblScore</li>
- * </ul>
+ * <p>Nota de comportamiento (ajustada): una validación manual incorrecta ya no termina la partida.
+ * La partida solo termina cuando el tiempo llega a 0 y la entrada del usuario es incorrecta.
  */
 public class GameController {
 
@@ -131,12 +122,19 @@ public class GameController {
         }
     }
 
+    /**
+     * Validación manual activada por el botón Validar o Enter.
+     * Si es correcta => success (avanza).
+     * Si es incorrecta => muestra feedback y permite seguir intentando (NO termina la partida).
+     */
     private void validateInput() {
         String typed = txtInput.getText();
         if (isInputCorrect(typed, currentWord)) {
             handleSuccess();
         } else {
-            handleFail("Palabra incorrecta");
+            lblFeedback.setText("Incorrecto. Intenta de nuevo.");
+            txtInput.requestFocus();
+            txtInput.selectAll();
         }
     }
 
@@ -205,6 +203,3 @@ public class GameController {
         }
     }
 }
-
-
-
