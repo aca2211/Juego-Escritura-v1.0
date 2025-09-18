@@ -1,0 +1,210 @@
+package com.example.juegoescritura.controller;
+
+import com.example.juegoescritura.model.GameModel;
+import com.example.juegoescritura.model.HighScoreManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.IOException;
+import java.net.URL;
+
+/**
+ * GameController maneja la escena de juego (game.fxml) de VelociTexto.
+ *
+ * <p>Responsabilidades principales:
+ * <ul>
+ *   <li>Controlar el flujo de niveles: presentar palabra, recibir input y validar</li>
+ *   <li>Manejar el temporizador por nivel y la barra de progreso vinculada</li>
+ *   <li>Calcular y actualizar la puntuación y el highscore</li>
+ *   <li>Validar automáticamente la entrada cuando el tiempo se agota</li>
+ *   <li>Proveer métodos para reiniciar, finalizar partida y volver al menú</li>
+ * </ul>
+ *
+ * <p>Comportamiento temporal:
+ * <ul>
+ *   <li>Tiempo base por nivel: 20s con decrementos cada 5 niveles, mínimo 2s</li>
+ *   <li>Cada acierto suma 10 puntos y avanza un nivel</li>
+ *   <li>Al fallar se muestra un diálogo y se retorna al menú</li>
+ * </ul>
+ *
+ * <p>Notas técnicas:
+ * <ul>
+ *   <li>El controlador espera ciertos fx:id en el FXML: lblWord, txtInput, lblTimer, lblLevel, lblFeedback, btnValidate, btnRestart, progressBar, lblScore</li>
+ * </ul>
+ */
+public class GameController {
+
+    @FXML private Label lblWord;
+    @FXML private TextField txtInput;
+    @FXML private Label lblTimer;
+    @FXML private Label lblLevel;
+    @FXML private Label lblFeedback;
+    @FXML private Button btnValidate;
+    @FXML private Button btnRestart;
+    @FXML private ProgressBar progressBar;
+    @FXML private Label lblScore;
+
+    private final GameModel model = new GameModel();
+    private final HighScoreManager hsManager = new HighScoreManager();
+
+    private Timeline timeline;
+    private int secondsLeft;
+    private String currentWord = "";
+    private int level = 1;
+    private int score = 0;
+
+    private Stage primaryStage;
+
+    public void setPrimaryStage(Stage stage) {
+        this.primaryStage = stage;
+    }
+
+    @FXML
+    private void initialize() {
+        btnValidate.setOnAction(e -> validateInput());
+        btnRestart.setOnAction(e -> endGameEarly());
+        txtInput.setOnKeyPressed((KeyEvent evt) -> {
+            if (evt.getCode() == KeyCode.ENTER) {
+                validateInput();
+                evt.consume();
+            }
+        });
+        lblFeedback.setText("");
+        progressBar.setProgress(1.0);
+        startNewLevel();
+    }
+
+    private boolean isInputCorrect(String typed, String expected) {
+        if (typed == null || expected == null) return false;
+        return typed.trim().equals(expected.trim());
+    }
+
+    private void startNewLevel() {
+        stopTimer();
+        currentWord = model.nextWord();
+        lblWord.setText(currentWord);
+        txtInput.setText("");
+        txtInput.requestFocus();
+        secondsLeft = model.calculateTimeForLevel(level);
+        lblLevel.setText(String.valueOf(level));
+        lblScore.setText(String.valueOf(score));
+        lblTimer.setText(secondsLeft + "s");
+        progressBar.setProgress(1.0);
+        lblFeedback.setText("");
+        startTimer();
+    }
+
+    private void startTimer() {
+        stopTimer();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+            secondsLeft--;
+            lblTimer.setText(secondsLeft + "s");
+            double total = model.calculateTimeForLevel(level);
+            progressBar.setProgress(Math.max(0.0, (double) secondsLeft / total));
+            if (secondsLeft <= 0) {
+                String typed = txtInput.getText();
+                if (isInputCorrect(typed, currentWord)) {
+                    handleSuccess();
+                } else {
+                    handleFail("Tiempo agotado");
+                }
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void stopTimer() {
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
+    }
+
+    private void validateInput() {
+        String typed = txtInput.getText();
+        if (isInputCorrect(typed, currentWord)) {
+            handleSuccess();
+        } else {
+            handleFail("Palabra incorrecta");
+        }
+    }
+
+    private void handleSuccess() {
+        stopTimer();
+        score += 10;
+        level++;
+        lblFeedback.setText("¡Correcto! +10");
+        lblScore.setText(String.valueOf(score));
+        startNewLevel();
+    }
+
+    private void handleFail(String reason) {
+        stopTimer();
+        lblFeedback.setText("Fallaste: " + reason);
+        int previousHigh = hsManager.loadHighScore();
+        if (score > previousHigh) {
+            hsManager.saveHighScore(score);
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Partida finalizada");
+        alert.setHeaderText("Perdiste");
+        alert.setContentText("Puntuación final: " + score + "\nMotivo: " + reason);
+        try {
+            var dp = alert.getDialogPane();
+            URL css = getClass().getResource("/com/example/juegoescritura/styles.css");
+            if (css != null) {
+                dp.getStylesheets().add(css.toExternalForm());
+                dp.getStyleClass().add("dialog-pane");
+            }
+        } catch (Exception ignored) {}
+        Platform.runLater(() -> {
+            try {
+                alert.showAndWait();
+            } catch (Exception ex) {
+                alert.show();
+            } finally {
+                returnToMenu();
+            }
+        });
+    }
+
+    private void endGameEarly() {
+        handleFail("Reiniciado por usuario");
+    }
+
+    private void returnToMenu() {
+        if (primaryStage == null) {
+            System.err.println("PrimaryStage no establecido; no se puede volver al menú.");
+            return;
+        }
+        try {
+            URL menuUrl = getClass().getResource("/com/example/juegoescritura/menu.fxml");
+            FXMLLoader loader = new FXMLLoader(menuUrl);
+            Parent menuRoot = loader.load();
+            MenuController menuController = loader.getController();
+            menuController.setPrimaryStage(primaryStage);
+            Scene menuScene = new Scene(menuRoot);
+            URL css = getClass().getResource("/com/example/juegoescritura/styles.css");
+            if (css != null) menuScene.getStylesheets().add(css.toExternalForm());
+            primaryStage.setScene(menuScene);
+            primaryStage.setTitle("VelociTexto - Menú");
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+

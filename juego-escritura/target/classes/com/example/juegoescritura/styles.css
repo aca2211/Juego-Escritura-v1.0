@@ -1,0 +1,246 @@
+/* styles.css - look & feel moderno para VelociTexto */
+
+/* base */
+.root {
+    -fx-font-family: "Inter", "Segoe UI", "Roboto", Arial, sans-serif;
+    -fx-base: #2a2f36;
+    -fx-background-color: #121417; /* fallback */
+}
+
+/* BACKGROUND IMAGE + OVERLAY */
+.anchor-pane-bg {
+    -fx-background-image: url("/com/example/juegoescritura/assets/images/bg.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    /* capa oscura para contraste del contenido */
+    -fx-background-color: linear-gradient(rgba(7,10,15,0.65), rgba(7,10,15,0.65));
+    -fx-background-blend-mode: overlay;
+}
+
+/* Contenedor principal tipo "card" */
+.card {
+    -fx-background-color: rgba(255,255,255,0.04);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 12, 0.0, 0, 6);
+}
+
+/* Tipografías y colores */
+.title {
+    -fx-font-size: 30px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #E9F1F7;
+    -fx-letter-spacing: 0.5px;
+}
+
+.big-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #E9F1F7;
+}
+
+.small-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: rgba(233,241,247,0.8);
+}
+
+/* Word label (la caja con la palabra) */
+.word-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f1724;
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-padding: 12 18 12 18;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 6, 0.0, 0, 2);
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 10;
+    -fx-padding: 10 12 10 12;
+    -fx-font-size: 14px;
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-pref-height: 40px;
+}
+
+/* Buttons */
+.button {
+    -fx-cursor: hand;
+    -fx-font-weight: 700;
+    -fx-background-radius: 12;
+    -fx-padding: 8 14 8 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.18), 6, 0.0, 0, 2);
+}
+
+/* Primary accent */
+.button-accent {
+    -fx-background-color: linear-gradient(#6EE7B7, #34D399);
+    -fx-text-fill: #061220;
+}
+
+/* Outline style */
+.button-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255,255,255,0.14);
+    -fx-text-fill: #E9F1F7;
+}
+
+/* Progress bar */
+.progress-bar {
+    -fx-accent: #34D399;
+    -fx-control-inner-background: rgba(255,255,255,0.08);
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 6;
+}
+
+/* Feedback text */
+.feedback-label {
+    -fx-text-fill: rgba(233,241,247,0.95);
+    -fx-font-size: 14px;
+}
+
+/* DialogPane (Alert) styling */
+.dialog-pane {
+    -fx-background-color: linear-gradient(to bottom right, #FFFFFF, #F4F7FA);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 14;
+}
+.dialog-pane .content {
+    -fx-text-fill: #0b1320;
+    -fx-font-size: 13px;
+}
+.dialog-pane .header-panel .label {
+    -fx-text-fill: #0b1320;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+}
+
+/* Make ImageView logo slightly scaled */
+.image-logo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 6, 0.2, 0, 2);
+}
+
+/* Responsive niceties */
+@media screen and (max-width: 800px) {
+    .title { -fx-font-size: 22px; }
+    .word-label { -fx-font-size: 18px; }
+    .text-field { -fx-pref-height: 36px; }
+}
+/* instrucciones: fondo uniforme (usa el mismo gris de la card) */
+.instructions-root {
+    -fx-background-color: rgba(26,30,36,0.75); /* gris uniforme oscuro */
+    -fx-background-radius: 10;
+}
+
+/* Asegurar que ScrollPane no pinte su propio fondo */
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+/* stat badges */
+.stat-badge {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-padding: 8 12 8 12;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 8, 0.0, 0, 3);
+    -fx-alignment: center;
+}
+
+.level-badge {
+    -fx-border-color: rgba(100,210,170,0.18);
+}
+
+.score-badge {
+    -fx-border-color: rgba(120,150,255,0.18);
+}
+
+/* text inside badge */
+.stat-label-title {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(233,241,247,0.8);
+    -fx-font-weight: 600;
+}
+
+.stat-label-value {
+    -fx-font-size: 22px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 800;
+    -fx-padding: 0 0 0 6;
+}
+/* LEVEL as a big bold number */
+.stat-level-value {
+    -fx-font-size: 36px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 6 12 6 12;
+    -fx-background-color: linear-gradient(#5EEAD4, #7C3AED);
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 8, 0, 0, 4);
+}
+
+/* Large title for score/time (same visual weight as the removed "Nivel" word) */
+.stat-title-large {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: rgba(233,241,247,0.95);
+    -fx-alignment: center-right;
+}
+
+/* Large value for score/time */
+.stat-value-large {
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Slight spacing tweak so the layout looks balanced */
+HBox > .stat-value-large, HBox > .stat-title-large {
+    -fx-padding: 0 6 0 6;
+}
+VBox > .stat-value-large, HBox > .stat-title-large {
+    -fx-padding: 0 6 0 6;
+}
+.menu-background {
+    -fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e);
+    -fx-padding: 20;
+}
+
+.menu-title {
+    -fx-font-size: 42px;
+    -fx-text-fill: #ecf0f1;
+    -fx-font-weight: bold;
+}
+
+.menu-version {
+    -fx-font-size: 14px;
+    -fx-text-fill: #bdc3c7;
+}
+
+.menu-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.start-button {
+    -fx-background-color: #2ecc71;
+}
+
+.start-button:hover {
+    -fx-background-color: #27ae60;
+}

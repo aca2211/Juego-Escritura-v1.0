@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Root usa class 'card' y ocupamos full-width del modal -->
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.juegoescritura.controller.InstructionsController"
+      alignment="TOP_CENTER" spacing="12" styleClass="card instructions-root" maxWidth="640">
+
+    <padding>
+        <Insets top="14" right="14" bottom="14" left="14"/>
+    </padding>
+
+    <!-- Título sin fondo blanco: simplemente texto con estilo -->
+    <Label text="Instrucciones - VelociTexto" styleClass="title"/>
+
+    <ScrollPane fitToWidth="true" prefHeight="300" style="-fx-background-color: transparent; -fx-background-insets: 0;">
+        <content>
+            <VBox spacing="10">
+                <padding>
+                    <Insets top="6" right="6" bottom="6" left="6"/>
+                </padding>
+
+                <Label wrapText="true" text="Reglas:" styleClass="big-label"/>
+                <Label wrapText="true" text="• Escribe exactamente la palabra que aparece en la pantalla y presiona Validar (o Enter)." />
+                <Label wrapText="true" text="• Tienes un tiempo por nivel; si agotas el tiempo sin acertar, pierdes." />
+                <Label wrapText="true" text="• Cada acierto suma 10 puntos; cada 5 niveles el tiempo disminuye 2 segundos (mínimo 2s)." />
+                <Label wrapText="true" text="• Al fallar verás tu puntuación final y podrás volver al menú." />
+                <Label wrapText="true" text="Consejos: el juego ignora mayúsculas y recorta espacios al validar (se compara sin diferenciar mayúsc./minusc.)." />
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <HBox spacing="8" alignment="CENTER_RIGHT">
+        <Button fx:id="btnClose" text="Cerrar" styleClass="button button-accent" onAction="#onClose"/>
+    </HBox>
+</VBox>

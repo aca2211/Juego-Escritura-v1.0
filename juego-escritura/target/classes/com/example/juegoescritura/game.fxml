@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.juegoescritura.controller.GameController"
+            prefWidth="900" prefHeight="520" styleClass="anchor-pane-bg">
+
+    <children>
+        <VBox spacing="12" AnchorPane.topAnchor="16" AnchorPane.bottomAnchor="16" AnchorPane.leftAnchor="16" AnchorPane.rightAnchor="16">
+            <!-- Reemplaza la antigua HBox superior por esta -->
+            <!-- TOP STATS: level number only, score and timer styled -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+
+
+                <VBox alignment="CENTER_LEFT" spacing="2">  <!-- LEVEL: solo número en negrita -->
+                    <Label text="Nivel" styleClass="stat-title-large"/>
+                    <Label fx:id="lblLevel" text="1" styleClass="stat-value-large"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- SCORE: título grande + valor -->
+                <VBox alignment="CENTER_RIGHT" spacing="2">
+                    <Label text="Puntuación" styleClass="stat-title-large"/>
+                    <Label fx:id="lblScore" text="0" styleClass="stat-value-large"/>
+                </VBox>
+
+                <!-- SPACING -->
+                <Region prefWidth="18"/>
+
+                <!-- TIME: título grande + valor -->
+                <VBox alignment="CENTER_RIGHT" spacing="2">
+                    <Label text="Tiempo" styleClass="stat-title-large"/>
+                    <Label fx:id="lblTimer" text="20s" styleClass="stat-value-large"/>
+                </VBox>
+            </HBox>
+
+
+            <Label text="Escribe exactamente la palabra que se muestra:" styleClass="small-text"/>
+            <Label fx:id="lblWord" text="Palabra aparecerá aquí" styleClass="word-label" wrapText="true"/>
+
+            <HBox spacing="10">
+                <TextField fx:id="txtInput" promptText="Escribe aquí..." HBox.hgrow="ALWAYS" styleClass="text-field"/>
+                <Button fx:id="btnValidate" text="Validar" styleClass="button button-accent"/>
+                <Button fx:id="btnRestart" text="Reiniciar" styleClass="button button-outline"/>
+            </HBox>
+
+            <ProgressBar fx:id="progressBar" prefWidth="860" progress="1.0" styleClass="progress-bar"/>
+
+            <Label fx:id="lblFeedback" text="" styleClass="feedback-label"/>
+        </VBox>
+    </children>
+</AnchorPane>
