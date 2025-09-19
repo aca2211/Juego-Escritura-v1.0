@@ -5,6 +5,8 @@ import com.example.juegoescritura.model.HighScoreManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,17 +61,21 @@ public class GameController {
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
+    private class ValidateHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(javafx.event.ActionEvent e) {
+            validateInput();
+        }
+    }
+
 
     @FXML
     private void initialize() {
-        btnValidate.setOnAction(e -> validateInput());
+        ValidateHandler validateHandler = new ValidateHandler();
+        btnValidate.setOnAction(validateHandler);
+        txtInput.setOnAction(validateHandler);
+
         btnRestart.setOnAction(e -> endGameEarly());
-        txtInput.setOnKeyPressed((KeyEvent evt) -> {
-            if (evt.getCode() == KeyCode.ENTER) {
-                validateInput();
-                evt.consume();
-            }
-        });
         lblFeedback.setText("");
         progressBar.setProgress(1.0);
         startNewLevel();
@@ -121,12 +127,6 @@ public class GameController {
             timeline = null;
         }
     }
-
-    /**
-     * Validación manual activada por el botón Validar o Enter.
-     * Si es correcta => success (avanza).
-     * Si es incorrecta => muestra feedback y permite seguir intentando (NO termina la partida).
-     */
     private void validateInput() {
         String typed = txtInput.getText();
         if (isInputCorrect(typed, currentWord)) {
